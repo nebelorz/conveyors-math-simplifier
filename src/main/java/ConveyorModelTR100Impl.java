@@ -1,10 +1,10 @@
 
-public class TR100 extends CapMeasures {
+public class ConveyorModelTR100Impl implements ConveyorModel{
+    private float capBearing;
+    private float capTotal;
 
-    public TR100() {
-        this.conveyorModel = "TR-100";
-    }
 
+    @Override
     public void capMeasures(int caseDiameter) {
         if (caseDiameter <= 16) {
             this.capBearing = 1f;
@@ -19,5 +19,15 @@ public class TR100 extends CapMeasures {
             this.capBearing = 3.5f;
             this.capTotal = 5f;
         }
+    }
+
+    @Override
+    public float getCapBearing() {
+        return capBearing * 2; // *2 as two caps are used per conveyor
+    }
+
+    @Override
+    public float getCapTotal() {
+        return capTotal * 2; // *2 as two caps are used per conveyor
     }
 }
