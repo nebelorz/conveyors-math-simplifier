@@ -1,17 +1,23 @@
+import java.util.Scanner;
 
 public class Conveyor {
 
     private float EL;
     private float RL;
     private float AL;
+
     private float caseCut;
-    private final int caseDiameter;
-    private final String caseMaterial;
-    private final int axisDiameter;
-    private final String axisMaterial;
-    private final String axisFinish;
+    private int caseDiameter;
+    private String caseMaterial;
+
+    private int axisDiameter;
+    private String axisMaterial;
+    private String axisFinish;
+
     private String conveyorModel;
 
+    public Conveyor() {
+    }
 
     public Conveyor(float EL, int caseDiameter, String caseMaterial, int axisDiameter, String axisMaterial, String axisFinish) {
         this.EL = EL;
@@ -49,20 +55,57 @@ public class Conveyor {
         this.caseCut = (EL - totalCap);
     }
 
-    public void calculateConveyor(CapMeasures model) {
+    public void calculateConveyor(ConveyorModel model) {
         // Calculates all conveyor measurements.
         model.capMeasures(this.caseDiameter);
 
         calculateRL(this.EL, model.getCapBearing());
         calculateAL(this.RL, this.caseDiameter);
         calculateCaseCut(this.EL, model.getCapTotal());
-        this.conveyorModel = model.getConveyorModel();
     }
 
-    public StringBuilder printConveyorData() {
+    public ConveyorModel getConveyorModelObject() {
+        // When more models get implemented, will be compared here.
+        /*
+        if (this.conveyorModel.equals("TR100")) {
+            return new ConveyorModelTR100Impl();
+        }
+         */
+        return new ConveyorModelTR100Impl();
+    }
+
+    public void askConveyorInputs() {
+        var scanner = new Scanner(System.in);
+
+        System.out.print("Model: ");
+        this.conveyorModel = scanner.nextLine().toUpperCase();
+
+        System.out.print("EL (milimetres): ");
+        this.EL = scanner.nextFloat();
+        scanner.nextLine();
+
+        System.out.print("[TUB] Diametre: ");
+        this.caseDiameter = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("[TUB] Material: ");
+        this.caseMaterial = scanner.nextLine().toUpperCase();
+
+        System.out.print("[EIX] Diametre: ");
+        this.axisDiameter = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("[EIX] Material: ");
+        this.axisMaterial = scanner.nextLine().toUpperCase();
+
+        System.out.print("[EIX] Acabat: ");
+        this.axisFinish = scanner.nextLine().toUpperCase();
+    }
+
+    public void printConveyorData() {
         var stringBuilder = new StringBuilder();
 
-        stringBuilder.append("|| DADES DEL RODET (").append(conveyorModel).append(") ||")
+        stringBuilder.append("\n|| DADES DEL RODET (").append(this.conveyorModel).append(") ||")
                 .append(System.lineSeparator())
                 .append("EL = ").append(this.EL).append(" mm.")
                 .append(System.lineSeparator())
@@ -84,7 +127,7 @@ public class Conveyor {
                 .append(System.lineSeparator())
                 .append("ACABAT = ").append(this.axisFinish)
                 .append(System.lineSeparator());
-        return stringBuilder;
+        System.out.println(stringBuilder);
     }
 
     @Override
@@ -98,7 +141,6 @@ public class Conveyor {
                 ", axisDiameter = " + axisDiameter +
                 ", axisMaterial = '" + axisMaterial + '\'' +
                 ", axisFinish = '" + axisFinish + '\'' +
-                ", conveyorModel = '" + conveyorModel + '\'' +
                 '}';
     }
 }

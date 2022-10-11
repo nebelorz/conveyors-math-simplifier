@@ -2,12 +2,13 @@
 public class Main {
 
     public static void main(String[] args) {
+        var conveyor = new Conveyor();
+        conveyor.askConveyorInputs();
 
-        var conveyor = new Conveyor(300, 50, "PVC", 8, "FE", "RETRACTIL");
-        var conveyorModel = new TR100();
-
+        ConveyorModel conveyorModel = conveyor.getConveyorModelObject();
         conveyor.calculateConveyor(conveyorModel);
 
-        System.out.println(conveyor.printConveyorData());
+        conveyor.printConveyorData();
     }
+
 }
